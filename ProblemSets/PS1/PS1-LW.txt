@@ -1,0 +1,43 @@
+\documentclass{article}
+
+% Language setting
+% Replace `english' with e.g. `spanish' to change the document language
+\usepackage[english]{babel}
+
+% Set page size and margins
+% Replace `letterpaper' with `a4paper' for UK/EU standard size
+\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+
+% Useful packages
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage[colorlinks=true, allcolors=blue]{hyperref}
+
+\title{Problem Set 1 - Task 5}
+\author{Laura Wardwell}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+An Introduction to Overleaf and LaTeX
+\end{abstract}
+
+\section{Introduction}
+
+My interests in economics and data science are mostly derived from my work background in accounting and banking. In particular, I am interested in the effects of regulation and accounting standards on markets. I am in the first year of the Accounting PhD program at the University of Oklahoma, and my first semester replication was Sarah Stuber and Chris Hogan's "Do PCAOB Inspections Improve the Accuracy of Accounting Estimates", which looks at whether the PCAOB inspection process for annually inspected audit firms affected conservatism in bank allowance for loan loss (ALL) estimates prior to the adoption of the Current Expected Credit Loss model.
+\setlength{\parskip}{12pt}
+
+I don't have any ideas yet about what I would like to do for my project in this class. The process of going through the replication last semester has made me more cautious, as I feel that the ALL proxy chosen by the authors might be faulty, and if this is true, the whole analysis may be flawed. It seems to be very important to have an appropriate proxy for the construct you are trying to measure. 
+
+My goal for this class is to improve my coding skillset. I feel woefully under-prepared and out of touch with the coding skills needed to perform academic research, due to my 11 years as a practicing CPA in between my Masters degree and now. I need a stronger foundation in technical skills in order to make any contribution to my field.
+
+My plan for after graduation is to hopefully get a job in academia, although I am not opposed to returning to industry if needs must. My family and our health and happiness is my first priority, and after having taken 5 years to better my own skills, I will need to provide them with a comfortable and happy place to live. 
+
+\section{Writing Equations in LaTeX}
+
+\subsection{Problem Set 1 - Task 6}
+
+\[a^2 + b^2 = c^2\] 
+
+\end{document}
