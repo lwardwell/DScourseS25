@@ -1,0 +1,6 @@
+library(jsonlite)
+library(tidyverse)
+mylist <- fromJSON('dates.json')
+mydf <- bind_rows(mylist$result[-1])
+class(mydf$date)
+head(mydf)

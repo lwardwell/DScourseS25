@@ -1,0 +1,39 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+
+\title{PS4\_Wardwell}
+\author{lwardwell }
+\date{February 24th, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{PS4 Question 7}
+\begin{enumerate}
+    \item What data sources would you be interested in scraping from the web?
+    \begin{itemize}
+        \item I am interested in bank failures and information around them, which is sometimes very sanitized from official sources. I might like to scrape tweets with the \#bankfailure hashtag to see if anything interesting comes up.  
+    \end{itemize}
+    \item API sources I am interested in:
+    \begin{itemize}
+        \item The FDIC has a "Statistics on Depository Institutions" (SDI) website, which has an API option to get data. 
+    \end{itemize}
+    \end{enumerate}
+\section*{PS4 Question 6 Answers}
+\begin{enumerate}
+        \item [(6.7)] What class is each dataframe?
+        \begin{itemize}
+            \item df = "tbl\_spark" "tbl\_sql"   "tbl\_lazy"  "tbl"
+            \item df1 = "tbl\_df", "tbl", "data.frame"
+    \end{itemize}
+        \item [(6.8)] Are the column names any different across the two objects? If so, why?
+        \begin{itemize}
+            \item The column names in the spark dataframe have "\_" separators instead of "." separators. For example, "Sepal\_Length" instead of "Sepal.Length". According to claude.ai, this is because Spark uses SQL naming conventions, and because "." has a special meaning in SWL, Spark is converting the "." to underscores.
+    \end{itemize}
+
+
+    
+\end{enumerate}
+
+\end{document}
