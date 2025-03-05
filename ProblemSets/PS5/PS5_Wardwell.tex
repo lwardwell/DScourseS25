@@ -1,0 +1,45 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{enumitem}
+
+\title{PS5\_Wardwell}
+\author{lwardwell }
+\date{March 3rd, 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{PS5 Question 3}
+\begin{itemize}[label=\bullet] 
+    \item What about the data you have pulled is interesting to you?
+    \begin{itemize}[label=\diamond]
+        \item The data I pulled is from the FDIC's failed bank list. The FDIC actually offers a csv download of this information for all bank failure since October 1st of 2000, which will be more efficient than scraping the information.         
+    \end{itemize}
+    \item Will this data be useful to you at some point in the future?
+    \begin{itemize}[label=\diamond]
+        \item This data may be useful to me in the future if I try to examine whether certain characteristics of banks make them more prone to possible failure.
+    \end{itemize}
+    \item Did you use any online tutorials to help you parse the data? If so, which ones?
+    \begin{itemize}[label=\diamond]
+        \item Yes, I used the following tools to help me parse the data:
+    \end{itemize}
+            \begin{enumerate}
+            \item SelectorGadget video tutorial teaching me how to use the tool.
+            \item ChatGPT assistance to write the code to select the data from the table.
+    \end{enumerate}
+    \end{itemize}
+
+\section*{PS5 Question 4}
+    \begin{itemize}[label=\bullet]
+        \item Choose an API and generate a table of data meaningful to you. What did you choose?
+        \begin{itemize}[label=\diamond]
+            \item I chose to try accessing the FDIC Statistics on Deposit Institutions API. I have utilized FDIC data before for my replication last semester in the Introduction to Accounting Research seminar, but for that class I downloaded raw CSV files and compiled and filtered the data within SAS. 
+        \end{itemize}
+        \item What was interesting or useful to you about this process?
+        \begin{itemize}[label=\diamond]
+            \item I was absolutely shocked to find an R package out there called "fdicdata" that connects to their API automatically for you and has built in functions to pull different kinds of data. First, I generated a table of the Total Assets for my old financial institution (Valliance Bank, FDIC Cert # 57841) to test the function. It worked flawlessly. 
+            \item Next, I had ChatGPT help me generate some code to redo some of my replication from last semester. This took a bit of trial and error, because the getFinancials() function in the R package is designed only to pull data from one institution at a time. ChatGPT helped me pull a list of institutions with data during my time period using the getInstitutionsAll() function, then looping the getFinancials() function through that list to pull all of the data for active institutions during the period I wanted to examine. It took quite a bit of time, but might be more efficient on OSCER. 
+        \end{itemize}
+    \end{itemize}
+\end{document}
