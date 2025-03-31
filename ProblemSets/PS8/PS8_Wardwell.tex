@@ -1,0 +1,23 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[margin=1in]{geometry}
+
+\title{PS8\_Wardwell}
+\author{lwardwell}
+\date{March 31st, 2025}
+
+\begin{document}
+\maketitle
+
+\section*{lm() ModelSummary Results}
+Ultimately, every method used to estimate $\hat{\beta}$ for our randomly created data became very close to the true $\beta$ used to create the data. By far the simplest method to code and use was the \texttt{lm\_model = lm(Y $\sim$ X - 1)} 
+\begin{center}
+ % Try each of these options (one at a time):
+\input{lm_results_stargazer.tex}   
+\end{center}
+
+
+
+\end{document}
