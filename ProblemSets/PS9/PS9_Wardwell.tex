@@ -1,0 +1,43 @@
+\documentclass{article}
+\usepackage{graphicx} % Required for inserting images
+\usepackage[margin=1in]{geometry}
+
+\title{PS9\_Wardwell}
+\author{lwardwell }
+\date{April 2025}
+
+\begin{document}
+
+\maketitle
+
+\section*{Question 7}
+
+The dimensions of the original training data are 404 × 14.
+The dimensions of the preprocessed training data are 404 × 75.
+The original number of X variables is 13.
+The new number of X variables is 74.
+Therefore, I have 61 more X variables than in the original housing data.
+\section*{Question 8}
+\begin{itemize}
+\item The optimal value of $\lambda$ for the LASSO model is .00139.
+\item The in-sample RMSE is .137.
+\item The out-of-sample RMSE (on the test data) is .188.
+\end{itemize}
+\section*{Question 9}
+\begin{itemize}
+\item The optimal value of $\lambda$ for the Ridge model is .0000000001.
+\item The in-sample RMSE is .140.
+\item The out-of-sample RMSE (on the test data) is .181.
+\end{itemize}
+\section*{Question 10}
+Regarding the ability to estimate a simple linear regression model on a dataset with more columns than rows:
+OLS estimation does not work on data with more columns than rows, and models become subject to overfitting. 
+Based on the RMSE values from the tuned LASSO and Ridge models:
+\begin{itemize}
+\item LASSO out-of-sample RMSE: .188
+\item Ridge out-of-sample RMSE: .181
+\end{itemize}
+My model's position in terms of the bias-variance tradeoff is:
+The Ridge model chose a very small lambda (0.0000000001), which means the model favors lower bias but possibly higher variance. The LASSO model selected a larger penalty (.00139) which increases bias but reduces variance. 
+The out-of-sample RSE achieved by the Ridge regression is slightly better, suggesting that this model has better bias/variance tradeoff.
+\end{document}
