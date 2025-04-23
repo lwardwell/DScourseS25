@@ -1,0 +1,170 @@
+\documentclass[12pt,letterpaper]{article}
+% just for the example
+\usepackage{lipsum}
+% Set margins to 1.5in
+\usepackage[margin=1in]{geometry}
+% for graphics
+\usepackage{graphicx}
+% for crimson text
+\usepackage{crimson}
+\usepackage[T1]{fontenc}
+% setup parameter indentation
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+% for 1.15 spacing between text
+\renewcommand{\baselinestretch}{1.15}
+% For defining spacing between headers
+\usepackage{titlesec}
+% Level 1
+\titleformat{\section}
+  {\normalfont\fontsize{18}{0}\bfseries}{\thesection}{1em}{}
+% Level 2
+\titleformat{\subsection}
+  {\normalfont\fontsize{14}{0}\bfseries}{\thesection}{1em}{}
+% Level 3
+\titleformat{\subsubsection}
+  {\normalfont\fontsize{12}{0}\bfseries}{\thesection}{1em}{}
+% Level 4
+\titleformat{\paragraph}
+  {\normalfont\fontsize{12}{0}\bfseries\itshape}{\theparagraph}{1em}{}
+% Level 5
+\titleformat{\subparagraph}
+  {\normalfont\fontsize{12}{0}\itshape}{\theparagraph}{1em}{}
+% Level 6
+\makeatletter
+\newcounter{subsubparagraph}[subparagraph]
+\renewcommand\thesubsubparagraph{%
+  \thesubparagraph.\@arabic\c@subsubparagraph}
+\newcommand\subsubparagraph{%
+  \@startsection{subsubparagraph}    % counter
+    {6}                              % level
+    {\parindent}                     % indent
+    {12pt} % beforeskip
+    {6pt}                           % afterskip
+    {\normalfont\fontsize{12}{0}}}
+\newcommand\l@subsubparagraph{\@dottedtocline{6}{10em}{5em}}
+\newcommand{\subsubparagraphmark}[1]{}
+\makeatother
+\titlespacing*{\section}{0pt}{12pt}{6pt}
+\titlespacing*{\subsection}{0pt}{12pt}{6pt}
+\titlespacing*{\subsubsection}{0pt}{12pt}{6pt}
+\titlespacing*{\paragraph}{0pt}{12pt}{6pt}
+\titlespacing*{\subparagraph}{0pt}{12pt}{6pt}
+\titlespacing*{\subsubparagraph}{0pt}{12pt}{6pt}
+% Set caption to correct size and location
+\usepackage[tableposition=top, figureposition=bottom, font=footnotesize, labelfont=bf]{caption}
+% set page number location
+\usepackage{fancyhdr}
+\fancyhf{} % clear all header and footers
+\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\rhead{\thepage}
+\pagestyle{fancy}
+% Overwrite Title
+\makeatletter
+\renewcommand{\maketitle}{\bgroup
+   \begin{center}
+   \textbf{{\fontsize{18pt}{20}\selectfont \@title}}\\
+   \vspace{10pt}
+   {\fontsize{12pt}{0}\selectfont \@author} 
+   \end{center}
+}
+\makeatother
+% Used for Tables and Figures
+\usepackage{float}
+% For using lists
+\usepackage{enumitem}
+% For bibliography management
+\usepackage[style=apa,backend=biber,natbib=true]{biblatex}
+\addbibresource{references.bib}  % Your .bib file
+% Custom Quote
+\newenvironment{myquote}[1]%
+  {\list{}{\leftmargin=#1\rightmargin=#1}\item[]}%
+  {\endlist}
+  
+% Create Abstract 
+\renewenvironment{abstract}
+{\vspace*{-.5in}\fontsize{12pt}{12}\begin{myquote}{.5in}
+\noindent \par{\bfseries \abstractname.}}
+{\medskip\noindent
+\end{myquote}
+}
+
+% For footnotes
+\usepackage{footnote}
+
+\begin{document}
+% Set Title, Author, and email
+\title{Does Level of Assurance Service Impact Financial Institution Outcomes?}
+\author{A Study of Assurance Services and Community Bank Behavior}
+\maketitle
+\thispagestyle{fancy}
+
+\section*{Introduction}
+
+Safe and sound financial institutions form a cornerstone of modern financial markets, and regulatory oversight of these institutions primarily focuses on stability, while trying to balance the inevitable costs of regulatory burden. In the United States, modern financial regulation has developed mostly as a series of responses to serious financial crises, beginning in earnest in the early twentieth century with the Great Depression and continuing through both the 2008 Financial Crisis that marred the first decade of the new millennium, and the 2020 COVID-19 recession \parencite{KandracMarsh2025}. One such response to a crisis, the Financial Institutions Reform, Recovery and Enforcement Act (FIRREA) of 1989, marked a significant regulatory shift following the Savings and Loan Crisis (also called the ``Thrift Crisis'') of the 1980's. During the heart of the crisis, over 500 institutions specifically designated as savings institutions failed, exceeding the total of the previous four decades combined\footnote{According to bank closure data obtained from WRDS, a total of 933 non-credit union financial institutions failed from the period of 1980 -- 1988. Another 226 credit unions, institutions which fulfill similar market functions as community banks, also failed during the same period.} \parencite{ClarkMurtaghCorcoran1989}. As FIRREA's provisions expanded regulatory authority to monitor financial institution health, the Federal Deposit Insurance Corporation (FDIC) expanded the information requirements of quarterly bank financial statements, also known as Call Reports, to include information on the level of financial statement assurance provided by external accountants (CITATION NEEDED). This creates a unique setting where we investigate whether the level of assurance, as defined by FDIC\footnote{Please see Appendix 1 for the types of assurance services indicated on the FFIEC Call Report forms 031, 041, and 051.}, affects community bank failure rates.
+
+The FIRREA was followed by the Federal Deposit Insurance Corporation Improvement Act (FDICIA) in 1991, which further required banks over \$500 million in assets (adjusted to \$1 billion in assets in 2005) to receive an integrated audit of both the institution financial statements and the internal controls over financial reporting (CITATION NEEDED). The implementation of FDICIA rules stratified community banks into two groups: one group above the asset threshold for whom the highest level of audit assurance is mandatory, and one group below the threshold with the ability to choose the preferred level of assurance service, absent regulatory intervention. For the second group, we expect variation in the level of assurance service to contain a stronger signaling value of institution quality.
+
+Understanding the relationship between the level of financial statement assurance obtained by community bank management and bank failure is important for multiple reasons. First, the community bank setting offers a rare opportunity to study different assurance levels that are typically unobservable in other small, privately owned company contexts. Understanding the relationship between variations of external assurance services and bank failure could reveal whether higher levels of assurance service provide an incremental benefit in maintaining institutional stability. Second, if higher assurance levels correlate with lower failure rates, this study would provide empirical evidence to inform bank management decisions when reviewing the cost-benefit analysis for obtaining assurance services. Finally, while the quality of audit and internal control is explicitly considered in the Uniform Financial Institutions Rating System (CAMELS) as a key ``Management'' evaluation factor \parencite{FDIC2023}, an evolving political landscape may affect current audit requirements for both publicly traded and privately owned banks. Industry groups continue to challenge costly regulatory requirements, as the Independent Community Bankers Association (ICBA) has written in their most recent letter to Congress regarding the onerous nature of integrated audits on community banks, seeking specific exemptions from SEC integrated audit requirements, and an increase in the current asset size threshold for integrated audits as required by the FDIC\footnote{[^3^] - This appears to be a formatting error in the original document.}. This study may provide evidence of incremental benefits associated with current integrated audit requirements specifically in reducing bank failure risk.
+
+This study employs a difference-in-differences design to determine whether financial institutions under \$500 million in assets (for whom audits are not mandatory) experience beneficial outcomes following the receipt of an audit versus a lower level of financial statement assurance. We combine data from March 31\textsuperscript{st} Call Reports for the years 1989 (the year the audit indicator was first required on bank call reports) and 2023, which include the level of assurance services\footnote{Level of assurance is defined on the Call Report for forms 041 and 051 on line RCON6724 also referred to as the ``audit indicator'' by the FDIC. For form 031, the audit indicator is included on line RCFD6724. We obtain information for both RCON6724 and RCFD6724 from FDIC Research Information System from 1989 -- 1999 and from the WRDS Bank Regulatory Suite for 2000 - 2023.} received by the bank in the prior year and identify banks voluntarily obtaining audits when not required to do so by regulation. We combine this data with the previous December 31\textsuperscript{st} year-end financial information\footnote{All data to create bank financial variables is obtained from the FDIC SDI at https://www.fdic.gov/analysis/bank-data-statistics.} to form our dependent variables and control variables. Our key independent variable is an indicator variable for the level of assurance obtained by an institution in the prior year. We use multiple outcome proxies including capital raises, acquisitions, enforcement actions and bank failures as our dependent variables to better capture changes in bank behavior after undergoing a move to a higher assurance level. We also explore whether there is a relationship between the voluntary choice to receive an integrated audit for banks with greater than \$500 million and less than \$1 billion in assets and our dependent variable proxies as well. Following prior literature, we control for institution size, public status, loan portfolio composition (mortgage, commercial real estate, C\&I, and consumer loans), and various risk measurements (DECIDED THESE HERE TOO).
+
+\section*{Motivation}
+
+\subsection*{Community Banking in United States and the Importance of Bank Stability}
+
+The United States banking industry has diverged into two distinct models, with the largest banks operating regional, national, or international networks which have increased in market share during the last three decades. The second group of smaller banks, often referred to as community banks, focuses on local operations and information advantages gained from deeper relationships within a smaller geographic area \cite{KandracMarsh2025}. Community banks generally focus on relationship banking and are often able to apply more discretionary judgment when working with customers, as opposed to bright line customer criteria, such as credit scores and minimum metrics, often utilized by larger institutions \cite{ICBA2024}. 
+
+In a survey of small businesses conducted in 2022, the Federal Reserve found business lending applicants at small banks were more satisfied with their experience, over those who received funding from large banks, finance companies, and online lenders \parencite{FRB2023}, suggesting better relationships between community bank lenders and their borrowing customers. Strong relationships between a borrower and financial institution are particularly useful in times of crisis, as noted in by Ai, Lin, and Newton \parencite{AiLinNewton2024}, who found that existing lending relationships, along with audit assurance obtained in the prior year, enabled small business borrowers in developing countries to obtain lower cost financing through loans. Severance of a lending relationship through institutional failure can result in costs to small businesses as they incur effort in establishing a relationship with a new institution.
+
+In addition, Kandrac and Marsh note that while community banks held a small percentage (15\%) of all bank loans as of 2019, these institutions held a larger portion of small business loans (36\%) in the same year. This is consistent with community banking institutions fulfilling an important role in local markets as intermediaries in the reduction of information asymmetry for small businesses, where the lender can access more information through the closer local relationship, and provide access to financial services which might be denied elsewhere.
+
+Small Business Lending Facts
+
+Participation in the PPP program
+
+Agricultural Lending Facts
+
+High information asymmetry in ag lending
+
+Benefits of relationship lending at a local level
+
+Deposit Relationships
+
+Cost of being "Unbanked"
+
+Limited Access in Rural Areas
+
+\subsection*{Assurance Services and Bank Stability}
+
+According to agency theory, monitoring activities necessarily restrain manager behavior and reduce agency costs related to opportunistic mismanagement \parencite{JensenMeckling1976}. However, community bank managers must select external monitoring services based on a cost and benefit tradeoff, as the highest levels of assurance service may not contain enough incremental benefit to the organization to justify the expenditure of capital (CITE).
+
+\textit{Prior research has demonstrated that audit quality can impact financial reporting quality in the banking industry \parencite{BeckNicolettiStuber2022}, which may in turn affect regulatory oversight and bank stability.} Ege, Nicoletti, and Stuber \parencite{EgeNicolettiStuber2025} find that increased auditor scrutiny of loan loss provisions can affect bank lending practices, suggesting that higher assurance levels might influence key risk areas that relate to bank failure.
+
+\subsection*{Historical Motivation for FDIC to ask for assurance levels}
+
+Definition of different levels
+
+Literature regarding whether different levels of assurance appear to affect quality
+
+Auditor as advisor literature?
+
+Tension
+
+\begin{myquote}{0.5in}
+ICBA current call for deregulation of integrated audit for publicly owned community banks.
+\end{myquote}
+
+\section*{Hypothesis Development}
+
+\textbf{H1:} Higher assurance levels will be associated with fewer bank failures at community banks not subject to mandatory audit.
+
+\textbf{H2:} Receipt of a voluntary integrated audit will be associated with fewer bank failures than for community banks receiving a financial statement only audit.
+
+RE: Community Banking Deposit Relationships
+
+Community banks fulfill an important need for deposit services in rural areas. According to the Federal Reserve Bank of Kansas City, in 2015 rural communities had an unbanked population of 7.6\% (CITE). Unbanked status individuals are often subjected to higher cost Alternative Financial Services (AFS), which erode income directly through additional fees such as check-cashing, funds transfer, and bill payments, and indirectly through a lack of access to wealth-building savings products (CITE BARR 2004).
+
+\printbibliography[title=References]
+
+\end{document}
