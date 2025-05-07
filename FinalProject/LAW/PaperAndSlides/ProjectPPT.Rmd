@@ -1,0 +1,216 @@
+---
+title: "Impact of Audit on Bank Failure Probability"
+author: "Laura Wardwell"
+date: "April 2025"
+output: 
+  beamer_presentation:
+    theme: "Madrid"
+    colortheme: "beaver"
+    fonttheme: "serif"
+    slide_level: 2
+    keep_tex: true
+    
+header-includes:
+  - \usepackage{biblatex}
+  - \addbibresource{econpaper.bib}
+  - \definecolor{burgundy}{RGB}{128, 0, 32}
+  - \setbeamercolor{frametitle}{fg=white,bg=burgundy}
+  - \setbeamercolor{title}{fg=white,bg=burgundy}
+  - \setbeamercolor{block title}{fg=white,bg=burgundy}
+  - \setbeamercolor{itemize item}{fg=burgundy}
+  - \setbeamercolor{itemize subitem}{fg=burgundy}
+  - \setbeamertemplate{bibliography item}[text]
+  - \setbeamerfont{bibliography item}{size=\footnotesize}
+  - \setbeamerfont{bibliography entry author}{size=\footnotesize}
+  - \setbeamerfont{bibliography entry title}{size=\footnotesize}
+  - \setbeamerfont{bibliography entry note}{size=\footnotesize}
+  - \setbeamerfont{bibliography entry location}{size=\footnotesize}
+  - \setbeamerfont{bibliography entry journal}{size=\footnotesize}
+  - \setlength\bibitemsep{0.5\baselineskip}
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, message = FALSE, warning = FALSE, 
+                      fig.width = 10, fig.height = 5)
+library(tidyverse)
+library(kableExtra)
+library(stargazer)
+library(fixest)
+library(modelsummary)
+library(ggplot2)
+
+# Load the data
+lgassets <- read.csv("C:/Users/lward/Documents/ECON - Data Science for Economists/ProjectDocs/CleanedData/large_assets.csv")
+smassets <- read.csv("C:/Users/lward/Documents/ECON - Data Science for Economists/ProjectDocs/CleanedData/small_assets.csv")
+```
+
+## Research Question
+- **Does the type of audit affect the probability of bank failure?**
+- External audits provide oversight function for banks beyond regulatory scrutiny
+- Interest in the role of auditing in preventing bank failures escalated in late 1980's
+- Focus on two audit variables:
+  - Traditional audit vs. other assurance types for banks under $500M
+  - Integrated vs. financial statement-only audits for banks between \$500M and \$1B
+
+## Significance
+- Audit creates:
+    - Possible operational efficiencies (Barton, Hodder, & Shepardson, 2025)
+    - Additional layer of oversight to compensate for managerial loss of control (Abdel-Khalik, 1993)
+    - Potential early warning signal for bank distress (Jin, Kanagaretnam, & Lobo, 2013)
+- Banking system stability is crucial to economic health
+- Regulatory implications for audit requirements in banking (ICBA, 2025)
+
+## Data Sources
+- **FDIC Call Reports**: Quarterly financial data for US banks (2000-2023)
+- **Audit Type Data**: RCON6724 from March Call Report (indicates audit type for previous year)
+- **FDIC Failed Bank List**: Historical record of bank failures (available from 2001 on FDIC website)
+
+## Bank Failures by Year
+
+```{r bank_failures_plot, echo=FALSE, fig.height=3.5, out.width="85%", dpi=300, fig.align="center"}
+# Create the plot directly in R
+# Sample data - replace with your actual data or load from your file
+years <- 2001:2023
+small_bank_failures <- c(2, 4, 2, 1, 0, 0, 1, 9, 73, 82, 49, 32, 19, 11, 4, 4, 3, 0, 4, 3, 0, 2, 0)
+large_bank_failures <- c(0, 0, 0, 0, 0, 0, 0, 4, 8, 9, 8, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+
+# Create data frame
+failures_df <- data.frame(
+  Year = rep(years, 2),
+  Count = c(small_bank_failures, large_bank_failures),
+  Category = c(rep("Small Banks (<$500M)", length(years)), 
+               rep("Large Banks (>$500M)", length(years)))
+)
+
+# Plot
+library(ggplot2)
+ggplot(failures_df, aes(x = factor(Year), y = Count, fill = Category)) +
+  geom_col(position = "stack") +
+  scale_fill_manual(values = c("Large Banks (>$500M)" = "#FF8C00", 
+                              "Small Banks (<$500M)" = "#1E78B4")) +
+  theme_minimal(base_size = 12) +
+  labs(title = "Bank Failures by Year",
+       x = "Year",
+       y = "Number of Failures") +
+  theme(
+    panel.grid.minor = element_blank(),
+    axis.text.x = element_text(angle = 45, hjust = 1, size = 9),
+    legend.position = "top",
+    legend.title = element_blank(),
+    legend.text = element_text(size = 9),
+    legend.margin = margin(0, 0, 0, 0),
+    legend.box.margin = margin(-10, 0, -10, 0),
+    plot.margin = margin(0, 5, 0, 5)
+  )
+```
+
+\end{center}
+
+\vspace{-0.3cm}
+- Financial crisis (2008-2010) shows **significant spike** in failures
+- Small banks (<$500M) experienced disproportionate failure rates
+- Recent years show relatively few failures in this sample, possibly due to regulatory easing during the covid pandemic.
+
+
+## Key Variables
+```{r}
+# Create a sample of the variables and descriptions
+variables <- data.frame(
+  Variable = c("Failurep1", "audit", "integrated", "fsonly", "size", "charge-offs", "npa", "comre", "mortgage", "c&i", "consumer", "capital", "all", "br_ratio", "subchapterS"),
+  Description = c("Bank failure in t+1 period (binary)", 
+                 "Received any kind of audit (binary)",
+                 "Received integrated audit only (binary)(only avilable post-2016)", 
+                 "Received financial statement-only audit (binary)(only avaiable post-2016",
+                 "Log of total assets",
+                 "Net charge-offs to total loans ratio",
+                 "Non-performing assets ratio", 
+                 "Commercial real estate concentration",
+                 "Mortgage concentration",
+                 "Commercial and industrial concentration",
+                 "Consumer concentration",
+                 "Tier 1 capital ratio", 
+                 "Allowance for loan and lease losses to total loans ratio",
+                 "Brokered deposits ratio",
+                 "Subchapter S bank (binary)")
+)
+
+knitr::kable(variables, booktabs = TRUE) %>%
+  kable_styling(font_size = 9)
+```
+
+
+## Logit Regression Model
+- **Binary outcome variable**: Bank failure in period t+1
+- **Key predictor variables**: Audit type indicators (audit, integrated, fsonly)
+- **Controls**: Asset size, loan portfolio composition and health ratios, capital ratios, etc.
+
+## Model Specification
+
+$$Pr(Failure_{i,t+1}) = \beta_0 + \beta_1 Audit_{i,t} + \beta_2 Size_{i,t} + \beta_3 Controls_{i,t} + \gamma_t + \delta_j + \epsilon_{i,t}$$
+
+Where:
+
+- $\gamma_t$ represents year fixed effects
+- $\delta_j$ represents Federal Reserve district fixed effects
+
+
+## Regression Results
+```{r}
+# Create a more comprehensive results table based on your BankFailureAnalysis.R results
+results_table <- data.frame(
+  Variable = c("Audit", "Integrated Audit", "Size", "Charge-offs", "NPA", "Comre", 
+              "Mortgage", "Comind", "Cons", "Capital", "ALL", "Brokered Deposits", "Subchapter S",
+              "Observations", "Pseudo R²", "Year FE", "FED District FE"),
+  SmallBanks = c("-0.563**", "", "-0.414***", "-0.307+", "13.830***", "-1.259+", 
+                "1.005", ".452", "-7.123***", "-59.283***", "7.042", "2.008**", "-.182",
+                "102,522", "0.575", "Yes", "Yes"),
+  LargeBanks = c("", "-.290", "-1.386*", "25.825*", "22.942**", "-1.467", "-2.479**", 
+                "5.341*", "-6.1**", "-17.520", "51.287+", "-2.628", "-.922",
+                "8,555", "0.267", "Yes", "Yes")
+)
+
+# Display the table with styling
+knitr::kable(results_table, 
+      col.names = c("Variable", "Small Banks (<$500M)", "Large Banks ($500M-$1B)"),
+      caption = "Logit Regression Results (Coefficients)", 
+      booktabs = TRUE,
+      align = c('l', 'c', 'c')) %>%
+  kable_styling(font_size = 9) %>%
+  row_spec(0, bold = TRUE, color = "white", background = "#800020") %>%
+  row_spec(14:17, background = "#f5f5f5", italic = TRUE) %>%  # Highlight model statistics
+  add_footnote("Note: *p<0.1; **p<0.05; ***p<0.01. Standard errors clustered by CERT.", 
+               notation = "none")
+```
+
+## Key Findings
+- Traditional audits associated with **lower failure probability** for all banks < $500M in assets
+- For the 2017 - 2022 sample, integrated audits show **no significant association** with failure
+- Integrated audit sample suffers from lower # of observations and economic issues which may distort results
+- Control variables align with prior banking literature expectations (Jin, et al., 2013a; Beck, Nicoletti, & Stuber, 2022)
+
+## What Did We Learn?
+- **Audit reduces probability of bank failure **: Having an audit is associated with a decrease in the probability for faulure in banks < $500M in assets
+- **Integrated audit effectiveness inconclusive**: Problems with the data or with the model may have distorted the results
+- Banks voluntarily choosing to be audited may have better governance, which may introduce an omitted variable that is difficult to proxy
+
+## Implications
+- **Policy considerations**: Proposed change of regulatory threshold for integrated audit to $5B may have little effect on bank failure
+- **Early warning signals**: Audit type transitions may signal changing risk profiles
+- **Future research**: Considering changes to the integrated audit model to account for economic effects and other omitted variables
+
+## References
+\footnotesize
+
+\begin{itemize}
+\item Abdel-Khalik, A. R. (1993). Why Do Private Companies Demand Auditing? A Case for Organizational Loss of Control. \textit{Journal of Accounting, Auditing \& Finance}, 8(1), 31-52.
+
+\item Barton, F. J., Hodder, L. D., \& Shepardson, M. L. (2025). Weathering the Storm: Does Voluntary Auditing Forestall Regulatory Sale or Closure of Troubled Community Banks? \textit{AUDITING: A Journal of Practice \& Theory}.
+
+\item Beck, M. J., Nicoletti, A. K., \& Stuber, S. B. (2022). The role of audit firms in spreading depositor contagion. \textit{The Accounting Review}, 97(4), 51-73.
+
+\item ICBA (2025). ICBA's Letter to the 119th Congress.
+
+\item Jin, J. Y., Kanagaretnam, K., \& Lobo, G. (2013). Unintended consequences of the increased asset threshold for FDICIA internal controls: Evidence from U.S. private banks. \textit{Journal of Banking \& Finance}, 37(12), 4879-4892.
+
+\item Jin, J. Y., Kanagaretnam, K., \& Lobo, G. (2011). Ability of accounting and audit quality variables to predict bank failure during the financial crisis. \textit{Journal of Banking \& Finance}, 35(7), 2811-2819.
+\end{itemize}
